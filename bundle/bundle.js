@@ -52,6 +52,8 @@
 	(function () {
 	    'use strict'; // use this to stop javascript from loosely compiling
 
+	    var _this = this;
+
 	    function DOMObj() {
 	        var self = this;
 
@@ -72,7 +74,6 @@
 	        self.updateProductHTML = function () {
 	            return new Promise(function (resolve) {
 	                for (var i = 0; i < self.products.length; i++) {
-
 	                    self.products[i].updateHTML();
 	                }
 	                resolve();
@@ -80,23 +81,26 @@
 	        };
 
 	        self.updateDOM = function () {
-	            var thisHTML = '';
+	            return new Promise(function (resolve) {
+	                var thisHTML = '';
 
-	            for (var i = 0; i < self.products.length; i++) {
+	                for (var i = 0; i < self.products.length; i++) {
 
-	                if (i % 3 === 0) {
-	                    thisHTML += "<div class='row'>";
-	                    console.log("START");
+	                    if (i % 3 === 0) {
+	                        thisHTML += "<div class='row'>";
+	                        console.log("START");
+	                    }
+
+	                    thisHTML += self.products[i].htmlView;
+
+	                    if (i % 3 === 2 || i === self.products.length - 1) {
+	                        thisHTML += "</div>";
+	                        console.log("FINISH");
+	                    }
 	                }
-
-	                thisHTML += self.products[i].htmlView;
-
-	                if (i % 3 === 2 || i === self.products.length - 1) {
-	                    thisHTML += "</div>";
-	                    console.log("FINISH");
-	                }
-	            }
-	            $("#content").append(thisHTML);
+	                $("#content").append(thisHTML);
+	                resolve();
+	            });
 	        };
 	    }
 
@@ -127,8 +131,12 @@
 
 	    // Using a promise will be faster than a timeout and guarantee that our async functions run in order
 	    page.getProducts('data.json').then(page.updateProductHTML).then(setTimeout(function () {
-	        page.updateDOM();
-	    }, 400));
+	        page.updateDOM().then(setTimeout(function () {
+	            $('.deleteButton').click(function () {
+	                $(_this).parent().remove();
+	            });
+	        }, 200));
+	    }, 600));
 	})();
 
 /***/ }

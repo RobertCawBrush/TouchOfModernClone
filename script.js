@@ -15,7 +15,6 @@
                         for (var i = 0; i < response.sales.length; i++) {
 
                             self.products.push(new ProductObj(response.sales[i], i));
-
                         }
                         resolve();
                     });
@@ -26,32 +25,34 @@
         self.updateProductHTML = function(){
             return new Promise(resolve => {
                 for( var i = 0; i < self.products.length; i++){
-
                     self.products[i].updateHTML();
-
                 }
                 resolve();
+
             })
         };
 
         self.updateDOM = function() {
-            var thisHTML = '';
+            return new Promise(resolve => {
+                var thisHTML = '';
 
-            for( var i = 0; i < self.products.length; i++) {
+                for( var i = 0; i < self.products.length; i++) {
 
-                if (i % 3 === 0 ) {
-                    thisHTML += "<div class='row'>";
-                    console.log("START");
+                    if (i % 3 === 0 ) {
+                        thisHTML += "<div class='row'>";
+                        console.log("START");
+                    }
+
+                    thisHTML += self.products[i].htmlView;
+
+                    if ((i % 3 === 2) || i === (self.products.length - 1) ) {
+                        thisHTML += "</div>";
+                        console.log("FINISH");
+                    }
                 }
-
-                thisHTML += self.products[i].htmlView;
-
-                if ((i % 3 === 2) || i === (self.products.length - 1) ) {
-                    thisHTML += "</div>";
-                    console.log("FINISH");
-                }
-            }
-            $("#content").append(thisHTML);
+                $("#content").append(thisHTML);
+                resolve();
+            })
         }
     }
 
@@ -74,7 +75,7 @@
                     .replace('{tagline}', self.tagline)
                     .replace('{url}', self.url);
 
-                console.log(self.index + ' product has worked through html')
+                console.log(self.index + ' product has worked through html');
             })
         };
     }
@@ -90,8 +91,13 @@
             page.updateProductHTML
         )
         .then(setTimeout(() => {
-                page.updateDOM();
-            }, 400)
+                page.updateDOM().then(setTimeout(() => {
+                        $('.deleteButton').click(() => {
+                            $(this).parent().remove();
+                        })
+                }, 200)
+                );
+            }, 600)
         );
 
 })();

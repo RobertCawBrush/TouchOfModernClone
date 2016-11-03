@@ -1,79 +1,74 @@
-# Front-End Challenge
+## runThrough
 
-This challenge is designed to let you show your thought process and approach to some basic tasks of front-end engineering. There are many ways to perform these tasks and we are not looking for a particular "right way". However, we do appreciate some basic principles of software design including performance, maintainability, usability, etc... 
+#Formatting
 
-Along with these tasks, we welcome any commentary or feedback. It can either be included in comments in your code or as a narrative. 
+an IIFE was wrapped around the entire script to avoid variable leakage
 
-Please refrain from using external libraries other than jQuery and Bootstrap.  We'd like to see how well you code, not how well you can hammer together a bunch of libraries. 
+a `'use strict';` was placed at the top of the document to force the code conventions we want to follow to avoid careless errors
 
-Here you are given an HTML, JSON, javascript and css file that pull data from the JSON file and display it for the user to see. In order to work, this challenge must be hosted on a web server of some kind, because the Javascript code does make some AJAX calls.  We've found MAMP to be an easy and convenient way to do this, if you don't already have a favorite way.  If you have it set up correctly, you should see something like this screenshot when you navigate to index.html:
+all lines of code that should be terminated are terminated with ;, not doing this and leaving it up to the compiler to add ; can cause "invisible" errors
 
-<img src="http://careers.touchofmodern.com/img/front-end-challenge-screenshot.png"/>  
+all == signs were changed to === to avoid coercian( or what is known as a type of typeCasting) which if left by itself an if statement like `if(1 == '1')`` will evaluate
+true
 
-## Tasks to complete
+all variables were changed to be defined as explicit variables
 
-Please complete the following tasks:
+all variables were camelCased and all constructors were pascal cased as per modern conventions
 
-1. In addition to its title and tagline, each product has an attribute named "description". We'd like to update the UI so that whenever you mouseover a product, an overlay comes across it with the description. 
-2. Convert the page to use Bootstrap to make it responsive, so when it's viewed on a mobile device there's no left-right scrolling and it still looks ok visually (i.e. it's easy to read) 
-3. Add an "X" in the top right corner of each product. When you click on it, have it remove itself from the page. 
-4. Perform a few style edits: link colors should be #0096ff, The title of the page should be 36 pixels high. The tagline of the page should be 18. Title of each product should be 16 pixels high. The product tagline should be 16. Center everything on the page including titles and the products display. 
-5. The way we load products is buggy and suboptimal.  Try refactoring it to work better and tell us why you did what you did.
+from there I reformatted a good amount of the whitespace to be much much easier to read
+(there was an area of code that was formatted like you would see a config, I changed that but that was a matter of preference
 
-For bonus points, throw in some of these:
+#Understanding the code
 
-1. It takes a second or two to load the page. Let the user know that the page is still loading until the page renders.
-2. Use some kind of transition when removing a product from the page via the "X"
-3. Optimize and improve the code and layout where you see fit (and tell us how and why you did)
-4. Give any thoughts or commentary on your solution.  What things would you optimize?  If you could use libraries, what libraries would you use?
+`ah geez, it's ALL jQuery`
 
+the next step was running through the code with a debugger to understand exactly what was happening. Initially, nothing was displaying on the page even after setting up the apache server,
+from the readme it looked like this was undesirable and it was supposed to fail something like 6/10 times. My solution (or what was supposed to be the solution) was to introduce promises.
 
-## How to submit your results
+I think promises have been back ported to native ES5 but I am used to using q for my promises so I imported ES6 to get something like it. As you can see my promises didn't exactly turn out right. I believe this is due to my lack of understanding of the challenge's code.
 
-Please follow these directions precisely because they affect our ability to evaluate your results.
+Now as ES6 is not a library rather a new iteration of javascript I count it as not violating that rule. With ES6 comes arrows functions, promises, operations that remove the need for for loops, and much more.
+Es6(what is now known as ES2015) isn't natively supported in all browsers yet so I needed to transpile my code. I installed Webpack and babel and the presets it needed to function. Again these are all jsut tools there isn't any code provided by
+ webpack or babel.
 
-1. Fork this repo
-2. Do your coding challenge and push to your forked repo
-3. Email a link to your repo to steven@touchofmodern.com and the recruiter you were working with to let us know you're ready.
+ #My understanding of the code
 
-## What we are looking for
-We are looking for several things with this challenge.  First, of course, we're looking for your answer to be technically correct. Beyond that, we're also looking for:
+ from what I gather the code works as follows:
 
-1. Is your code easy to read and understand?
-2. Are you following the usual conventions for front end web development?
-3. In addition to being technically elegant, are your solutions visually elegant?
-4. Did you follow these directions?
+ 1. An object is created that has functions constructed on it, this first object is necessary mainly for the self.products array
 
-Basically, write the code as if you were going to release it to a real website with an actual warehouse and if you mess it up then boxes will start piling up on the floor and stuff.  Because that's what happened to us.
+ 2. an AJAX call is made from that object and a for loop worker ran to populate self.products which fills said array with fifty something objects
 
-When we get your response, here's exactly what we're going to do:
+ 3. with the calls completion page.updateProductHTML is called and it fires another worker that devours the properties on the objects in self.products which psueod binds the values to a template
 
-1. Clone your forked code to a laptop and run it through a local Apache server.
-2. Look at the code itself to see its correctness, readability, and general elegance.
-3. Simulate a mobile browser in our browser.
-4. Click and scroll around to see how things work.
+ 4. from there the code runs it's final function, page.updateDOM, which attempts to build the HTML's rows  alternating between the remainder of 3 populating a row every 3 elements
 
-That's it.  There aren't any hidden gotchas or trick questions.  That's really what we're going to do.
+ 5. If everything executed in order than the page loads with about fifty components
 
-#Install
+ #explanation (WTFs with this guy's code)
 
-run as you normally would, I've committed the bundled code for convenience.
+ I've never only used Jquery before and was frankly surprised that this challenge was only Jquery. From what I gather, you're attempting to hire an engineer for a rewrite which i would say you're up for if this code is typical of the app
 
+ I'm unfortunately a pretty modern developer so only using jQuery is mostly lost on me. That's not exactly a problem though as angular and react can run alongside a prebuilt jQuery application.
 
+ So far I like the company(based on its history) but I'm not sure if our technologies are in the same vein.
 
-#Changes made
+ #What I would improve, and libraries
 
+ This day in age a jQuery only app is fairly legacy, I would reWrite as soon as you could using something like React/Redux or even Angular.
+ The speed you would gain would be worth it alone besides how simple some of the code could be rendered. Frameworks also significantly speed up development time and can cut down on the large amount of libraries you are no doubt using currently.
+ Bootstrap would also be easier to use along with some mixins from SASS/LESS
 
-First thing I did was reformat the code. Some unusual practices we're followed such as config style spaces like so
-`var somevariable          =         12`
-`var someOtherVariable     =       'Foo'`
+ I would immediately cease using global variables as they can cause protectedName clashes as well as overwrite prototypes and cause general chaos.
+ Variables should be declared locally and passed into functions as needed. Redux handles that pretty well with how it manages State(immutable state).
 
-Generally this is a faux paux, and seeing as how I alone am supposed to work with it the formats we're necessary.
+ Maybe look into ES6/ES2015 or TypeScript and look into a class based system from the challenge code it seems you favor that type of programming.
 
-Second, I replaced all == with === as coercian and typecasting can really screw up code and we want our checks to be absolute
+ As mentioned earlier I would import Q as I am familiar with it's methods and it's promises are more or less the same as ES6, plus there's a couple helper methods that cut down on code.
 
-Third, an IIFE was wrapped around all of the code to prevent our global variables from running into any protoyped variables as well as to localize said variables.
+ I'd install a linter to check that a specific format is kept project wide, and define a specific server for my code. Cleaner code is better code.
 
-Fourth, a 'use strict' was written to avoid javascript's common pitfalls such as AutoPlacing semi colons where they don't belong. Semi colons we're added to all statements which would need it
+ to maximize speed, all code needs to be uglified/minified to eliminate white space and long variable names. Besides the speed increase the file will also be smaller speeding the runTime up even more.
 
-Fourth, I installed babel and Webpack for use of ES2015. As this is a language and tools I am not breaking the no extra libraries except Jquery/Bootstrap clause. This does add an extra step to building our project but it also enables our code to be uglified/minified. Make sure to run `npm install` and then `webpack` if you ahvent already.
+  ## wrapup
+  I apologize if I came off as rude in the above text that is not my intention. The challenge was interesting even with me failing it. I will be recreating the page in React in the next coming days.
