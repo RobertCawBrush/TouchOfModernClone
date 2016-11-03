@@ -1,6 +1,5 @@
 //use an IIFE to avoid variable leakage since using public variables,
 // we dont have any other scripts so this is unnecessary but I do it out of habit
-
 (function(){
     'use strict'; // use this to stop javascript from loosely compiling
 
@@ -40,14 +39,12 @@
 
                     if (i % 3 === 0 ) {
                         thisHTML += "<div class='row'>";
-                        console.log("START");
                     }
 
                     thisHTML += self.products[i].htmlView;
 
                     if ((i % 3 === 2) || i === (self.products.length - 1) ) {
                         thisHTML += "</div>";
-                        console.log("FINISH");
                     }
                 }
                 $("#content").append(thisHTML);
@@ -75,7 +72,6 @@
                     .replace('{tagline}', self.tagline)
                     .replace('{url}', self.url);
 
-                console.log(self.index + ' product has worked through html');
             })
         };
     }
@@ -91,7 +87,7 @@
             page.updateProductHTML
         )
         .then(setTimeout(() => {
-                page.updateDOM().then(setTimeout(() => {
+                page.updateDOM().then(setTimeout(() => { //this is here as I couldn't figure out what exactly was needed but I wanted to work on the other tasks
                         $('.deleteButton').click(() => {
                             $(this).parent().remove();
                         })
@@ -99,5 +95,4 @@
                 );
             }, 600)
         );
-
 })();
