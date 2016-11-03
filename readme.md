@@ -55,3 +55,25 @@ When we get your response, here's exactly what we're going to do:
 
 That's it.  There aren't any hidden gotchas or trick questions.  That's really what we're going to do.
 
+#Install
+
+run as you normally would, I've committed the bundled code for convenience.
+
+
+
+#Changes made
+
+
+First thing I did was reformat the code. Some unusual practices we're followed such as config style spaces like so
+`var somevariable          =         12`
+`var someOtherVariable     =       'Foo'`
+
+Generally this is a faux paux, and seeing as how I alone am supposed to work with it the formats we're necessary.
+
+Second, I replaced all == with === as coercian and typecasting can really screw up code and we want our checks to be absolute
+
+Third, an IIFE was wrapped around all of the code to prevent our global variables from running into any protoyped variables as well as to localize said variables.
+
+Fourth, a 'use strict' was written to avoid javascript's common pitfalls such as AutoPlacing semi colons where they don't belong. Semi colons we're added to all statements which would need it
+
+Fourth, I installed babel and Webpack for use of ES2015. As this is a language and tools I am not breaking the no extra libraries except Jquery/Bootstrap clause. This does add an extra step to building our project but it also enables our code to be uglified/minified. Make sure to run `npm install` and then `webpack` if you ahvent already.

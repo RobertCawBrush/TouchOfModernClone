@@ -1,54 +1,97 @@
+//use an IIFE to avoid variable leakage since using public variables,
+// we dont have any other scripts so this is unnecessary but I do it out of habit
 
-function domobj(){
-  var self        =this;
-  self.products   = [];
+(function(){
+    'use strict'; // use this to stop javascript from loosely compiling
 
-  self.getproducts = function(url){
-    $.getJSON(url, function(response){
-        for(i=0; i<response.sales.length ; i++){
-          self.products.push( new productobj(response.sales[i], i)  );
+    function DOMObj(){
+        var self = this;
+
+        self.products = [];
+
+        self.getProducts = function(url) {
+            return new Promise (resolve => {
+                    $.getJSON(url, function (response) {
+                        for (var i = 0; i < response.sales.length; i++) {
+
+                            self.products.push(new ProductObj(response.sales[i], i));
+
+                        }
+                        resolve();
+                    });
+                }
+            )
+        };
+
+        self.updateProductHTML = function(){
+            return new Promise(resolve => {
+                for( var i = 0; i < self.products.length; i++){
+
+                    self.products[i].updateHTML();
+
+                }
+                resolve();
+            })
+        };
+
+        self.updateDOM = function() {
+            var thisHTML = '';
+
+            for( var i = 0; i < self.products.length; i++) {
+
+                if (i % 3 === 0 ) {
+                    thisHTML += "<div class='row'>";
+                    console.log("START");
+                }
+
+                thisHTML += self.products[i].htmlView;
+
+                if ((i % 3 === 2) || i === (self.products.length - 1) ) {
+                    thisHTML += "</div>";
+                    console.log("FINISH");
+                }
+            }
+            $("#content").append(thisHTML);
         }
-    });
-  }
-    
-  self.updateproducthtml = function(){
-    for( i=0; i< self.products.length ; i++){
-      self.products[i].updatehtml();
     }
-  }
-  
-  self.updatedom = function(){
-    var i=0
-    thishtml='';
-    for( i=0; i< self.products.length ; i++){
-      if (i % 3 == 0 ){  thishtml += "<div class='row'>"; console.log("START") }
-      thishtml += self.products[i].htmlview;
-      if ((i % 3 == 2) || i == (self.products.length-1) ){thishtml += "</div>";console.log("FINISH")}
+
+    function ProductObj(product, i) {
+        var self = this;
+
+        self.photo = product.photos.medium_half;
+        self.title = product.name;
+        self.tagline = product.tagline;
+        self.url = product.url;
+
+        self.htmlView = "";
+        self.index = i;
+
+
+        self.updateHTML = function() {
+            $.get('product-template.html', function(template){
+                self.htmlView = template.replace('{image}', self.photo)
+                    .replace('{title}', self.title)
+                    .replace('{tagline}', self.tagline)
+                    .replace('{url}', self.url);
+
+                console.log(self.index + ' product has worked through html')
+            })
+        };
     }
-    $("#content").append(thishtml)
-  }
-  
-}
+    // since our code is defined around global variables,
+    // this needs to be outside of our promises and hope it runs in time
 
-function productobj(product, i){
-  var self          = this;
-  self.photo        = product.photos.medium_half
-  self.title        = product.name
-  self.tagline      = product.tagline
-  self.url          = product.url
-  self.htmlview     = ""
-  self.index        = i
-  self.custom_class = "col"+ ((i % 3) +1)
-  
-  self.updatehtml= function(){
-    $.get('product-template.html', function(template){
-      self.htmlview = template.replace('{image}', self.photo).replace('{title}', self.title).replace('{tagline}', self.tagline).replace('{url}', self.url).replace('{custom_class}', self.custom_class);
-    });
-  }
-}
+    // ideally you'd want to avoid having globals and pass variables to their functions instead
+    var page = new DOMObj();
 
+    // Using a promise will be faster than a timeout and guarantee that our async functions run in order
+    page.getProducts('data.json')
+        .then(
+            page.updateProductHTML
+        )
+        .then(setTimeout(() => {
+                page.updateDOM();
+            }, 400)
+        );
 
-var page=new domobj();
-page.getproducts('data.json');
-setTimeout("console.log('building html');page.updateproducthtml();",20);
-setTimeout("page.updatedom()",50)
+})();

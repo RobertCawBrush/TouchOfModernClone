@@ -1,13 +1,67 @@
-body{font-family: "Arial"}
-a{text-decoration: none;}
+body{
+    font-family: "Arial", Georgia, Serif;
+}
+a{
+    text-decoration: none;
+}
 
-.product-container{width:300px; border:1px solid #aaa; margin:10px; display:inline-block;}
-.product-container img{width:100%; height:auto;}
-.row{width:946px;}
+.product-container img{
+    width: 100%; height: auto;
+}
 
-.col1{float:left;}
-.col2{margin:10px auto;}
-.col3{float:right;}
+.row {
+    width: 946px;
+}
 
-.title{font-size:20px;}
-.description{padding:10px;}
+.col1 {
+    float: left;
+}
+.col2 {
+    margin: 10px auto;
+}
+.col3 {
+    float: right;
+}
+
+.title {
+    font-size: 32px;
+}
+
+.tagline {
+    font-size: 18px;
+}
+.description{
+    padding: 10px;
+}
+
+/*XS*/
+@media(max-width:767px){
+    .product-container {
+        border: 1px solid #aaa;
+        width: 400px;
+    }
+}
+
+/*SM*/
+@media(min-width:768px){
+    .product-container {
+        border: 1px solid #aaa;
+        width: 400px;
+    }
+}
+
+/*MD*/
+@media(min-width:992px){
+    .product-container {
+        border: 1px solid #aaa;
+        width: 300px;
+    }
+}
+
+/*LG*/
+@media(min-width:1200px){
+    .product-container {
+        border: 1px solid #aaa;
+        width: 300px;
+    }
+}
