@@ -10,19 +10,6 @@ a{
     width: 100%; height: auto;
 }
 
-.row {
-    width: 946px;
-}
-
-.col1 {
-    float: left;
-}
-.col2 {
-    margin: 10px auto;
-}
-.col3 {
-    float: right;
-}
 
 .title {
     font-size: 32px;
@@ -35,11 +22,28 @@ a{
     padding: 10px;
 }
 
+ .title.text-content{
+    background: rgba(0,0,0,0.5);
+    color: white;
+    cursor: wait;
+    display: table;
+    height: 150px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 150px;
+
+    padding: 10px;
+}
+
+img:hover .title.text-content {
+    opacity: 1;
+}
+
 /*XS*/
 @media(max-width:767px){
     .product-container {
         border: 1px solid #aaa;
-        width: 400px;
     }
 }
 
@@ -47,7 +51,7 @@ a{
 @media(min-width:768px){
     .product-container {
         border: 1px solid #aaa;
-        width: 400px;
+        width: 600px;
     }
 }
 

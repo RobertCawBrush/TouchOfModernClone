@@ -46,13 +46,10 @@
 
 	'use strict';
 
-	//use an IIFE to avoid variable leakage since using public variables,
-	// we dont have any other scripts so this is unnecessary but I do it out of habit
-
+	//we are using an IIFE to restrict our variables to a local scope and avoid variable leakage,
+	// we don't have any other scripts so this is unnecessary but I do it out of habit and it doesn't hurt
 	(function () {
 	    'use strict'; // use this to stop javascript from loosely compiling
-
-	    var _this = this;
 
 	    function DOMObj() {
 	        var self = this;
@@ -61,10 +58,17 @@
 
 	        self.getProducts = function (url) {
 	            return new Promise(function (resolve) {
+
+	                var template = '';
+
+	                $.get('product-template.html', function (tempTemplate) {
+	                    template = tempTemplate;
+	                });
+
 	                $.getJSON(url, function (response) {
 	                    for (var i = 0; i < response.sales.length; i++) {
 
-	                        self.products.push(new ProductObj(response.sales[i], i));
+	                        self.products.push(new ProductObj(response.sales[i], i, template));
 	                    }
 	                    resolve();
 	                });
@@ -74,6 +78,7 @@
 	        self.updateProductHTML = function () {
 	            return new Promise(function (resolve) {
 	                for (var i = 0; i < self.products.length; i++) {
+
 	                    self.products[i].updateHTML();
 	                }
 	                resolve();
@@ -88,23 +93,26 @@
 
 	                    if (i % 3 === 0) {
 	                        thisHTML += "<div class='row'>";
-	                        console.log("START");
+	                        console.log('START');
 	                    }
 
 	                    thisHTML += self.products[i].htmlView;
 
 	                    if (i % 3 === 2 || i === self.products.length - 1) {
 	                        thisHTML += "</div>";
-	                        console.log("FINISH");
+	                        console.log('finish');
+	                    }
+
+	                    if (i === self.products.length - 1) {
+	                        $("#content").append(thisHTML);
 	                    }
 	                }
-	                $("#content").append(thisHTML);
 	                resolve();
 	            });
 	        };
 	    }
 
-	    function ProductObj(product, i) {
+	    function ProductObj(product, i, template) {
 	        var self = this;
 
 	        self.photo = product.photos.medium_half;
@@ -115,28 +123,34 @@
 	        self.htmlView = "";
 	        self.index = i;
 
+	        //this async call is slow, very slow
 	        self.updateHTML = function () {
-	            $.get('product-template.html', function (template) {
+	            return new Promise(function (resolve) {
 	                self.htmlView = template.replace('{image}', self.photo).replace('{title}', self.title).replace('{tagline}', self.tagline).replace('{url}', self.url);
 
-	                console.log(self.index + ' product has worked through html');
+	                console.log('updateHTML ' + self.index + ' ran');
+	                resolve();
 	            });
 	        };
 	    }
-	    // since our code is defined around global variables,
-	    // this needs to be outside of our promises and hope it runs in time
 
+	    function addDelete() {
+	        var _this = this;
+
+	        $('.deleteButton').click(function () {
+	            $(_this).parent().remove();
+	        });
+	        console.log('addDelete Ran');
+	    }
+
+	    // since our code is defined around global variables,
+	    // out DOMObj needs to be outside of our promises and hope it runs in time
 	    // ideally you'd want to avoid having globals and pass variables to their functions instead
 	    var page = new DOMObj();
 
-	    // Using a promise will be faster than a timeout and guarantee that our async functions run in order
-	    page.getProducts('data.json').then(page.updateProductHTML).then(setTimeout(function () {
-	        page.updateDOM().then(setTimeout(function () {
-	            $('.deleteButton').click(function () {
-	                $(_this).parent().remove();
-	            });
-	        }, 200));
-	    }, 600));
+	    // // Using a promise will be faster than a timeout and consistently run our async functions in order
+
+	    page.getProducts('data.json').then(page.updateProductHTML).then(page.updateDOM).then(addDelete);
 	})();
 
 /***/ }
