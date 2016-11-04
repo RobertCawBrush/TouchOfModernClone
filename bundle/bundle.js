@@ -139,7 +139,11 @@
 
 	            Array.from(delBtnArray).forEach(function (element) {
 	                element.addEventListener('click', function (event) {
-	                    event.target.parentElement.remove();
+	                    var targetElement = event.target.parentElement;
+
+	                    $(targetElement).fadeOut(400, function () {
+	                        targetElement.remove();
+	                    });
 	                });
 	            });
 
