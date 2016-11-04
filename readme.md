@@ -1,8 +1,10 @@
-## Foreword
+<h1> Front End Challange </h1>
+
+<h2> Foreword</h2>
 
 If you want to see the code in ES5 look into the `bundle.js`, This code is generated so I'm not completely sure how it looks. For my intended code look at the `script.js`.
 
-#Formatting
+<h2>Formatting</h2>
 
 An IIFE was wrapped around the entire script to avoid variable leakage
 
@@ -20,7 +22,7 @@ All variables were camelCased and all constructors were pascal cased as per mode
 From there I reformatted a good amount of the whitespace to be much much easier to read
 (there was an area of code that was formatted like you would see a config, I changed that but that was a matter of preference
 
-#Understanding the code
+<h2>Understanding the code</h2>
 
 `ah geez, it's ALL jQuery`
 
@@ -43,7 +45,7 @@ Es6 isn't natively supported in all browsers yet so I needed to transpile my cod
 
  5. If everything executed in order than the page loads with about fifty components
 
- #What I did improve
+ <h3>What I did improve</h3>
 
  I reduced the ajax request for the template as it was calling every single time but the code it return didn't need to be mutated
 
@@ -51,7 +53,7 @@ Es6 isn't natively supported in all browsers yet so I needed to transpile my cod
 
  Overall the time was reduced from 5000ms to around 1400ms.
 
- #What I would improve, and libraries
+ <h3>What I would improve, and libraries</h3>
 
  This day in age a jQuery only frontEnd is fairly legacy, I would reWrite as soon as you could using something like React/Redux or even Angular.
  The speed you would gain would be worth it alone besides how simple some of the code could be rendered. Frameworks also significantly speed up development time and can cut down on the amount of libraries you are currently using.
@@ -69,5 +71,5 @@ Es6 isn't natively supported in all browsers yet so I needed to transpile my cod
 
  To maximize speed, all code needs to be uglified/minified to eliminate white space and long variable names (I noticed some code wasn't minified on ToMos main page). Besides the speed increase the file will also be smaller speeding the runTime up even more.
 
-  ## wrapup
+  <h2> wrap up</h2>
  The challenge was interesting and I will be recreating the page in React in the next coming days.
