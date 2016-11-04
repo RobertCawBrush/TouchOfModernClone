@@ -122,7 +122,7 @@
         });
     }
 
-    $(window).load(() => {
+    $(window).on("load", () => {
         $('html').toggleClass('loading');
     });
 
