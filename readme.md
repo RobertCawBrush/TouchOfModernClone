@@ -1,4 +1,6 @@
-## runThrough
+## Foreword
+
+If you want to see the code in ES5 look into the `bundle.js`, This code is generated so I'm not completely sure how it looks. For my intended code look at the `script.js`.
 
 #Formatting
 
