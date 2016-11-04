@@ -41,19 +41,13 @@ Es6 isn't natively supported in all browsers yet so I needed to transpile my cod
 
  5. If everything executed in order than the page loads with about fifty components
 
- #explanation (WTFs with this guy's code)
-
- I've never only used Jquery before and was frankly surprised that this challenge was only Jquery. From what I gather, you're attempting to hire an engineer for a rewrite which i would say you're up for if this code is typical of the app
-
- I'm unfortunately a pretty modern developer so only using jQuery is mostly lost on me. That's not exactly a problem though as angular and react can run alongside a prebuilt jQuery application.
-
- So far I like the company(based on its history) but I'm not sure if our technologies are in the same vein.
-
  #What I did improve
 
  I reduced the ajax request for the template as it was calling every single time but the code it return didn't need to be mutated
 
  I refactored the function calls out of timeouts into a promise chain for speed and consistency. I could have also used callbacks.
+
+ overall the time was reduced from 5000ms to around 1400ms.
 
  #What I would improve, and libraries
 

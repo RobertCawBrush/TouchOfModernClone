@@ -61,6 +61,7 @@
 
 	                var template = '';
 
+	                //initially this line was in updateHTML and was called more than once
 	                $.get('product-template.html', function (tempTemplate) {
 	                    template = tempTemplate;
 	                });
@@ -76,13 +77,11 @@
 	        };
 
 	        self.updateProductHTML = function () {
-	            return new Promise(function (resolve) {
-	                for (var i = 0; i < self.products.length; i++) {
-
-	                    self.products[i].updateHTML();
-	                }
-	                resolve();
-	            });
+	            //This line here still uses a for loop but behind the scenes.
+	            //Promise.all also consumes/resolves all of my promises set in updateHTML
+	            return Promise.all(self.products.map(function (product) {
+	                return product.updateHTML();
+	            }));
 	        };
 
 	        self.updateDOM = function () {
@@ -93,14 +92,12 @@
 
 	                    if (i % 3 === 0) {
 	                        thisHTML += "<div class='row'>";
-	                        console.log('START');
 	                    }
 
 	                    thisHTML += self.products[i].htmlView;
 
 	                    if (i % 3 === 2 || i === self.products.length - 1) {
 	                        thisHTML += "</div>";
-	                        console.log('finish');
 	                    }
 
 	                    if (i === self.products.length - 1) {
@@ -119,28 +116,43 @@
 	        self.title = product.name;
 	        self.tagline = product.tagline;
 	        self.url = product.url;
+	        self.description = product.description;
 
 	        self.htmlView = "";
 	        self.index = i;
 
-	        //this async call is slow, very slow
 	        self.updateHTML = function () {
 	            return new Promise(function (resolve) {
-	                self.htmlView = template.replace('{image}', self.photo).replace('{title}', self.title).replace('{tagline}', self.tagline).replace('{url}', self.url);
+	                self.htmlView = template.replace('{image}', self.photo).replace('{title}', self.title).replace('{tagline}', self.tagline).replace('{url}', self.url).replace('{description}', self.description);
 
-	                console.log('updateHTML ' + self.index + ' ran');
 	                resolve();
 	            });
 	        };
 	    }
 
-	    function addDelete() {
-	        var _this = this;
+	    function addUtilities() {
 
-	        $('.deleteButton').click(function () {
-	            $(_this).parent().remove();
+	        // add delete code
+	        var delBtnArray = document.getElementsByClassName('delete-button');
+
+	        Array.from(delBtnArray).forEach(function (element) {
+	            element.addEventListener('click', function (event) {
+	                event.target.parentElement.remove();
+	            });
 	        });
-	        console.log('addDelete Ran');
+
+	        //add text overlay on mouseover
+	        var imageArray = document.getElementsByClassName('img-responsive');
+
+	        Array.from(imageArray).forEach(function (element) {
+
+	            element.addEventListener('mouseenter', function () {
+	                $(element).parents('a').parents('div').children().filter('.description').toggleClass('hidden');
+	            });
+	            element.addEventListener('mouseleave', function () {
+	                $(element).parents('a').parents('div').children().filter('.description').toggleClass('hidden');
+	            });
+	        });
 	    }
 
 	    // since our code is defined around global variables,
@@ -148,9 +160,8 @@
 	    // ideally you'd want to avoid having globals and pass variables to their functions instead
 	    var page = new DOMObj();
 
-	    // // Using a promise will be faster than a timeout and consistently run our async functions in order
-
-	    page.getProducts('data.json').then(page.updateProductHTML).then(page.updateDOM).then(addDelete);
+	    // Using a promise will be faster than a timeout and consistently run our async functions in order
+	    page.getProducts('data.json').then(page.updateProductHTML).then(page.updateDOM).then(addUtilities);
 	})();
 
 /***/ }

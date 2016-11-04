@@ -1,12 +1,13 @@
-<div class="col-xs-12 col-sm-offset-1 col-sm-8 col-md-2">
+<div class="col-sm-12 col-md-4">
   <div class="product-container">
-    <button class="deleteButton btn btn-outline-danger pull-right">X</button>
+    <button class="delete-button btn btn-outline-danger pull-right">X</button>
     <a href="{url}">
-      <img src="{image}">
-      <div class="description text-center">
-        <div class="title">{title}</div>
-        <div class="tagline">{tagline}</div>
+      <img class="img-responsive" src="{image}">
+      <div class="product-snippet text-center">
+        <div class="product-title">{title}</div>
+        <div class="product-tagline">{tagline}</div>
       </div>
     </a>
+    <div class="description overlay hidden">{description}</div>
   </div>
 </div>
