@@ -55,7 +55,6 @@
 
                     if(i === (self.products.length -1)) {
                         $("#content").append(thisHTML);
-                        $('html').toggleClass('loading');
 
                     }
                 }
@@ -122,6 +121,10 @@
             resolve();
         });
     }
+
+    $(window).load(() => {
+        $('html').toggleClass('loading');
+    });
 
     // since our code is defined around global variables,
     // out DOMObj needs to be outside of our promises and hope it runs in time
