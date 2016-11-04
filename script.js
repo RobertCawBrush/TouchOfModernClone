@@ -55,6 +55,8 @@
 
                     if(i === (self.products.length -1)) {
                         $("#content").append(thisHTML);
+                        $('html').toggleClass('loading');
+
                     }
                 }
                 resolve();
@@ -76,43 +78,44 @@
 
         self.updateHTML = function() {
             return new Promise(resolve => {
-                    self.htmlView = template.replace('{image}', self.photo)
-                        .replace('{title}', self.title)
-                        .replace('{tagline}', self.tagline)
-                        .replace('{url}', self.url)
-                        .replace('{description}', self.description);
+                self.htmlView = template.replace('{image}', self.photo)
+                    .replace('{title}', self.title)
+                    .replace('{tagline}', self.tagline)
+                    .replace('{url}', self.url)
+                    .replace('{description}', self.description);
 
-                    resolve();
+                resolve();
             });
         };
     }
 
     function addUtilities() {
+        return new Promise(resolve => {
 
-        // add delete code
-        var delBtnArray = document.getElementsByClassName('delete-button');
+            // add delete code
+            var delBtnArray = document.getElementsByClassName('delete-button');
 
-        Array.from(delBtnArray).forEach(function(element) {
-            element.addEventListener('click', event => {
+            Array.from(delBtnArray).forEach(function (element) {
+                element.addEventListener('click', event => {
                     event.target.parentElement.remove();
+                });
             });
+
+            //add text overlay on mouseover
+            var imageArray = document.getElementsByClassName('img-responsive');
+
+            Array.from(imageArray).forEach(element => {
+
+                element.addEventListener('mouseenter', function () {
+                    $(element).parents('a').parents('div').children().filter('.description').toggleClass('hidden');
+                });
+                element.addEventListener('mouseleave', function () {
+                    $(element).parents('a').parents('div').children().filter('.description').toggleClass('hidden');
+                });
+
+            });
+            resolve();
         });
-
-        //add text overlay on mouseover
-        var imageArray = document.getElementsByClassName('img-responsive');
-
-        Array.from(imageArray).forEach(element  => {
-
-            element.addEventListener('mouseenter', function(){
-                $(element).parents('a').parents('div').children().filter('.description').toggleClass('hidden');
-            });
-            element.addEventListener('mouseleave', function(){
-                $(element).parents('a').parents('div').children().filter('.description').toggleClass('hidden');
-            });
-
-        });
-
-
     }
 
     // since our code is defined around global variables,
@@ -121,8 +124,8 @@
     var page = new DOMObj();
 
     // Using a promise will be faster than a timeout and consistently run our async functions in order
-        page.getProducts('data.json')
-            .then( page.updateProductHTML )
-            .then( page.updateDOM )
-            .then( addUtilities );
+    page.getProducts('data.json')
+        .then( page.updateProductHTML )
+        .then( page.updateDOM )
+        .then( addUtilities );
 })();

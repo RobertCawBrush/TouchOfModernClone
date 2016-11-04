@@ -102,6 +102,7 @@
 
 	                    if (i === self.products.length - 1) {
 	                        $("#content").append(thisHTML);
+	                        $('html').toggleClass('loading');
 	                    }
 	                }
 	                resolve();
@@ -131,27 +132,30 @@
 	    }
 
 	    function addUtilities() {
+	        return new Promise(function (resolve) {
 
-	        // add delete code
-	        var delBtnArray = document.getElementsByClassName('delete-button');
+	            // add delete code
+	            var delBtnArray = document.getElementsByClassName('delete-button');
 
-	        Array.from(delBtnArray).forEach(function (element) {
-	            element.addEventListener('click', function (event) {
-	                event.target.parentElement.remove();
+	            Array.from(delBtnArray).forEach(function (element) {
+	                element.addEventListener('click', function (event) {
+	                    event.target.parentElement.remove();
+	                });
 	            });
-	        });
 
-	        //add text overlay on mouseover
-	        var imageArray = document.getElementsByClassName('img-responsive');
+	            //add text overlay on mouseover
+	            var imageArray = document.getElementsByClassName('img-responsive');
 
-	        Array.from(imageArray).forEach(function (element) {
+	            Array.from(imageArray).forEach(function (element) {
 
-	            element.addEventListener('mouseenter', function () {
-	                $(element).parents('a').parents('div').children().filter('.description').toggleClass('hidden');
+	                element.addEventListener('mouseenter', function () {
+	                    $(element).parents('a').parents('div').children().filter('.description').toggleClass('hidden');
+	                });
+	                element.addEventListener('mouseleave', function () {
+	                    $(element).parents('a').parents('div').children().filter('.description').toggleClass('hidden');
+	                });
 	            });
-	            element.addEventListener('mouseleave', function () {
-	                $(element).parents('a').parents('div').children().filter('.description').toggleClass('hidden');
-	            });
+	            resolve();
 	        });
 	    }
 
