@@ -70,6 +70,8 @@ Es6 isn't natively supported in all browsers yet so I needed to transpile my cod
  I'd move your AJAX calls to REST based calls.
 
  To maximize speed, all code needs to be uglified/minified to eliminate white space and long variable names (I noticed some code wasn't minified on ToMos main page). Besides the speed increase the file will also be smaller speeding the runTime up even more.
+ 
+ Something else that I believe needs work is the method I am using for the loading widget. It's not very consistent with appearing and disappearing and seems to have a particular issue with having a cache. While it's very minor i think it could use some work.
 
   <h2> wrap up</h2>
  The challenge was interesting and I will be recreating the page in React in the next coming days.
