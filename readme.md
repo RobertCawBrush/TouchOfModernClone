@@ -2,9 +2,9 @@
 
 <h2> Foreword</h2>
 
-If you want to see the code in ES5 look into the `bundle.js`, This code is generated so I'm not completely sure how it looks. For my intended code look at the `script.js`.
+If you want to see the code in ES5 look into the `bundle.js`, This code is generated so I'm not completely sure how it looks. For my intended code look at the `script.js`. There is no need to run webpack as I made sure to commit my bundled code. Everything works as normal just start MAMP then navigate to the index file.
 
-make sure to run `npm install`, I converted the CDN's to local libraries as I work offline from time to time.
+There are a couple of commits I made over the weekend to the index as I was using local dependencies and didn't want to force an `npm install` on a project that had defined plans on what you would do when reviewing.
 
 <h2>Formatting</h2>
 
