@@ -4,6 +4,8 @@
 
 If you want to see the code in ES5 look into the `bundle.js`, This code is generated so I'm not completely sure how it looks. For my intended code look at the `script.js`.
 
+make sure to run `npm install`, I converted the CDN's to local libraries as I work offline from time to time.
+
 <h2>Formatting</h2>
 
 An IIFE was wrapped around the entire script to avoid variable leakage
