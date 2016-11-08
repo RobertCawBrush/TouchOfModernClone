@@ -14,17 +14,18 @@
                     var template = '';
 
                     //initially this line was in updateHTML and was called more than once
+
                     $.get('product-template.html', function (tempTemplate) {
                         template = tempTemplate;
-                    });
 
-                    $.getJSON(url, function (response) {
-                        for (var i = 0; i < response.sales.length; i++) {
+                        $.getJSON(url, function (response) {
+                            for (var i = 0; i < response.sales.length; i++) {
 
-                            self.products.push(new ProductObj(response.sales[i], i, template));
+                                self.products.push(new ProductObj(response.sales[i], i, template));
 
-                        }
-                        resolve();
+                            }
+                            resolve();
+                        });
                     });
                 }
             )
@@ -77,7 +78,8 @@
 
         self.updateHTML = function() {
             return new Promise(resolve => {
-                self.htmlView = template.replace('{image}', self.photo)
+                self.htmlView = template
+                    .replace('{image}', self.photo)
                     .replace('{title}', self.title)
                     .replace('{tagline}', self.tagline)
                     .replace('{url}', self.url)
